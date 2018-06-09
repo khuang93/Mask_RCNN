@@ -10,3 +10,4 @@ opencv-python
 h5py
 imgaug
 IPython[all]
+bleach==1.5.0
