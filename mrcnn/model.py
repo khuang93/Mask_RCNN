@@ -2075,14 +2075,14 @@ class MaskRCNN():
         exlude: list of layer names to excluce
         """
         import h5py
-        from keras.engine import topology
+        from keras.engine import saving
 
         if exclude:
             by_name = True
 
         if h5py is None:
             raise ImportError('`load_weights` requires h5py.')
-        f = h5py.File(filepath, mode='r'`
+        f = h5py.File(filepath, mode='r')
         if 'layer_names' not in f.attrs and 'model_weights' in f:
             f = f['model_weights']
 
@@ -2097,9 +2097,9 @@ class MaskRCNN():
             layers = filter(lambda l: l.name not in exclude, layers)
 
         if by_name:
-            topology.load_weights_from_hdf5_group_by_name(f, layers)
+            saving.load_weights_from_hdf5_group_by_name(f, layers)
         else:
-            topology.load_weights_from_hdf5_group(f, layers)
+            saving.load_weights_from_hdf5_group(f, layers)
         if hasattr(f, 'close'):
             f.close()
 
