@@ -17,7 +17,8 @@ import mrcnn.model as modellib
 from mrcnn import visualize
 # Import COCO config
 sys.path.append(os.path.join(ROOT_DIR, "samples/coco/"))  # To find local version
-import coco
+# import coco
+from samples.coco import coco
 
 #%matplotlib inline 
 
@@ -31,7 +32,7 @@ if not os.path.exists(COCO_MODEL_PATH):
     utils.download_trained_weights(COCO_MODEL_PATH)
 
 # Directory of images to run detection on
-IMAGE_DIR = "/local/MT/Datasets/rgbd_dataset_freiburg1_teddy/rgb"
+IMAGE_DIR = "/local/MT/Datasets/living_room_traj1n_frei_png/rgb"
 
 
 class InferenceConfig(coco.CocoConfig):
@@ -85,12 +86,13 @@ print(len(imgs))
 
 
 
-for img in range(1,len(imgs)):
+for img in range(0,len(imgs)):
 #     img = '{:d}'.format(img).zfill(4)
 #     file_names = next(os.walk(IMAGE_DIR))[2]
     # image = skimage.io.imread(os.path.join(IMAGE_DIR, random.choice(file_names)))
     
     image = skimage.io.imread(os.path.join(IMAGE_DIR, imgs[img]))
+    print(img)
     print(imgs[img])
     # Run detection
     results = model.detect([image], verbose=1)
@@ -117,4 +119,4 @@ for img in range(1,len(imgs)):
         mask_tmp = np.array(masks[:,:,i-1]*classid[i-1])
         mask = np.maximum(mask,mask_tmp)
         mask=masks[:,:,i-1]*classid[i-1]
-        np.savetxt(os.path.join(IMAGE_DIR,str(imgs[img])+'.'+str(i)+".txt"),mask,fmt='%i')
+        np.savetxt(os.path.join(IMAGE_DIR,'../pixel_label/'+str(imgs[img])+'.'+str(i)+".txt"),mask,fmt='%i')
